@@ -1,0 +1,1 @@
+mongo my_db --eval "db.school.count()"

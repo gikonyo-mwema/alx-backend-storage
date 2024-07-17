@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Specify your MongoDB database name
+DB_NAME="my_db"
+
+# Specify the document to insert
+DOCUMENT='{"name": "Holberton school"}'
+
+# Use the mong command to insert the document
+mongo "$DB_NAME" --eval "db.school.insert($DOCUMENT)"
