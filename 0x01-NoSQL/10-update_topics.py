@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+""" Updates """
+
+
 def update_topics(mongo_collection, name, topics):
     """
     Updates the topics of all school documents with the specified name.
