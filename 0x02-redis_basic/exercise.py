@@ -2,7 +2,7 @@
 """ Cache Class """
 import redis
 import uuid
-from typing import Union, Callable
+from typing import Union, Callable, Any
 from functools import wraps
 
 
@@ -51,7 +51,7 @@ class Cache:
     # Define the count_calls decorator
     def count_calls(method: Callable) -> Callable:
         @wraps(method)
-        def wrapper(self, *args, **kwargs):
+        def wrapper(self: Any, *args, **kwargs) -> str:
             method_name = method.__qualname__
             count_key = f"calls:{method_name}"
             self._redis.incr(count_key)
