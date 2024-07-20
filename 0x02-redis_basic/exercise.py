@@ -3,6 +3,7 @@
 import redis
 import uuid
 from typing import Union, Callable
+from functools import wraps
 
 
 class Cache:
@@ -49,12 +50,12 @@ class Cache:
 
     # Define the count_calls decorator
     def count_calls(method: Callable) -> Callable:
-        @wraps(method)  # Use wraps to preserve original function info
+        @wraps(method)
         def wrapper(self, *args, **kwargs):
-            method_name = method.__qualname__  # Get qualified method name
-            count_key = f"calls:{method_name}"  # Create a key for counting
-            self._redis.incr(count_key)  # Increment the count
-            return method(self, *args, **kwargs)  # Call the original
+            method_name = method.__qualname__
+            count_key = f"calls:{method_name}"
+            self._redis.incr(count_key)
+            return method(self, *args, **kwargs)
 
         return wrapper
 
