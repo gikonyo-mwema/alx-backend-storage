@@ -46,3 +46,24 @@ class Cache:
         Retrieve data as an integer.
         """
         return self.get(key, fn=int)
+
+    # Define the count_calls decorator
+    def count_calls(method: Callable) -> Callable:
+        @wraps(method)  # Use wraps to preserve original function info
+        def wrapper(self, *args, **kwargs):
+            method_name = method.__qualname__  # Get qualified method name
+            count_key = f"calls:{method_name}"  # Create a key for counting
+            self._redis.incr(count_key)  # Increment the count
+            return method(self, *args, **kwargs)  # Call the original
+
+        return wrapper
+
+    # Apply the decorator to Cache.store
+    @count_calls
+    def store(self, data: Union[str, bytes, int, float]) -> str:
+        """
+        Store the input data in Redis and return the generated key.
+        """
+        key = str(uuid.uuid4())  # Generate a random key
+        self._redis.set(key, data)
+        return key
